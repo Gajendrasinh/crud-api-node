@@ -44,9 +44,9 @@ app.get('/', function(req, res){
     res.json({"message": "I am working"});
 });
 
-var server = app.listen(app.get('port'), function() {
-    var port = server.address().port;
-    console.log('Magic happens on port ' + port);
+var server = app.listen(app.get('port'), function() {<br>
+    var port = server.address().port;<br>
+    console.log('Magic happens on port ' + port);<br>
 });
 
 All right! Let’s now run the server and go to http://localhost:3000 to access the route we just defined.
