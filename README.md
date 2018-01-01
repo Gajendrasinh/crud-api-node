@@ -22,9 +22,9 @@ Building a Restful CRUD API with Node.js, Express and MongoDB
 
     Our application folder now has a package.json file and a node_modules folder -
 
-    crud-api
-        └── node_modules/
-        └── package.json
+    crud-api <br>
+        - node_modules/
+        - package.json<br>
     
 # Setting up the web server
 
