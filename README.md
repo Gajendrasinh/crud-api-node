@@ -5,26 +5,26 @@ Building a Restful CRUD API with Node.js, Express and MongoDB
 
 1. Fire up your terminal and create a new folder for the application.
 
-$ mkdir crud-api
+    $ mkdir crud-api
 
 2. Initialize the application with a package.json file
 
-Go to the root folder of your application and type npm init to initialize your app with a package.json file.
+    Go to the root folder of your application and type npm init to initialize your app with a package.json file.
 
-$ cd crud-api
-$ npm init
+    $ cd crud-api
+    $ npm init
 
 3. Install dependencies
 
-We will need express, mongoose and body-parser modules in our application. Let’s install them by typing the following command -
+    We will need express, mongoose and body-parser modules in our application. Let’s install them by typing the following command -
 
-$ npm install express body-parser mongoose --save
+    $ npm install express body-parser mongoose --save
 
-Our application folder now has a package.json file and a node_modules folder -
+    Our application folder now has a package.json file and a node_modules folder -
 
-crud-api
-    └── node_modules/
-    └── package.json
+    crud-api
+        └── node_modules/
+        └── package.json
     
 # Setting up the web server
 
@@ -33,9 +33,7 @@ Let’s now create the main entry point of our application. Create a new file na
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-
 const app = express();
-
 app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.urlencoded({ extended: false }))
