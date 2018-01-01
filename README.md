@@ -54,3 +54,36 @@ All right! Let’s now run the server and go to http://localhost:3000 to access 
 $ node server.js 
 Server is listening on port 3000
 
+# Configuring and Connecting to the database
+
+I like to keep all the configurations for the app in a separate folder. Let’s create a new folder config in the root folder of our application for keeping all the configurations -
+
+    $ mkdir config <br>
+    $ cd config
+    
+Now, Create a new file database.config.js inside config folder with the following contents -
+
+module.exports = {<br>
+    url: 'mongodb://localhost:27017/test'<br>
+}
+
+# Defining the toDo model in Mongoose
+
+Next, We will define the todo model. Create a new folder called app inside the root folder of the application, then create another folder called models inside the app folder -
+
+$ mkdir app/models <br>
+$ cd app/models
+
+Now, create a file called todo.js inside app/models folder with the following contents -
+
+const mongoose = require('mongoose'); <br>
+
+const Schema = mongoose.Schema;  <br>
+
+const toDoSchema = new Schema({  <br>
+	title: String,  <br>
+	url: String, <br>
+	description: String <br>
+}); <br>
+
+module.exports = mongoose.model('todo', toDoSchema , 'todo')
