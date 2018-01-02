@@ -11,7 +11,7 @@ Building a Restful CRUD API with Node.js, Express and MongoDB
 
     Go to the root folder of your application and type npm init to initialize your app with a package.json file.
 
-    $ cd crud-api
+    $ cd crud-api<br>
     $ npm init
 
 3. Install dependencies
@@ -34,6 +34,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
+
+const api = require('./server/routes/todo.route.js');
+
 app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -74,7 +77,7 @@ Next, We will define the todo model. Create a new folder called app inside the r
 $ mkdir app/models <br>
 $ cd app/models
 
-Now, create a file called todo.js inside app/models folder with the following contents -
+Now, create a file called todo.model.js inside app/models folder with the following contents -
 
 const mongoose = require('mongoose'); <br>
 
@@ -87,3 +90,108 @@ const toDoSchema = new Schema({  <br>
 }); <br>
 
 module.exports = mongoose.model('todo', toDoSchema , 'todo')
+
+# Defining Routes using Express
+
+Next up is the routes for the Notes APIs. Create a new folder called routes inside the app folder.
+
+$ mkdir app/routes <br>
+$ cd app/routes
+
+Now, create a new file called todo.route.js inside app/routes folder with the following contents -
+
+const express = require('express'); <br>
+const router = express.Router(); <br>
+const mongoose = require('mongoose'); <br>
+const todos = require('../models/todo.model'); <br>
+var configDB = require('../config/database.js');<br>
+
+mongoose.Promise = global.Promise;<br>
+
+mongoose.connect(configDB.url, function (err) {  <br>
+    if(err){<br>
+		console.error('Error! '+err);<br>
+	}else{<br>
+        console.log("Database connected")<br>
+    }<br>
+}); 
+
+
+//Retrieving all todo list
+router.get('/todo', function(req, res, next) {<br>
+   todos.find({}).exec(function(err, todos){<br>
+        if(err){<br>
+            console.error("Error " +err);<br>
+        }else{<br>
+            res.json(todos);<br>
+        }<br>
+   });<br>
+});
+
+//Retrieving a single todo list
+router.get('/todo/:id', function(req, res, next) {<br>
+    todos.findById(req.params.id).exec(function(err, todos){<br>
+         if(err){<br>
+             console.error("Error " +err);<br>
+         }else{<br>
+             res.json(todos);<br>
+         }
+    });
+ });
+
+//Creating a new todo list
+ router.post('/todo', function(req, res, next){<br>
+    var newtodos = new Categories();<br>
+    newtodos.title = req.body.title;<br>
+    newtodos.description = req.body.description;<br>
+    newtodos.save(function(err, insertedTodo){<br>
+        if(err){<br>
+            console.log(err);<br>
+        }else{<br>
+            res.json(insertedTodo);<br>
+        }   <br>
+    })<br>
+ });<br>
+
+//Updating a todo list
+ router.put('/todo/:id', function(req, res, next){<br>
+    todos.findByIdAndUpdate(req.params.id , {<br>
+            $set : {<br>
+                title : req.body.title,<br>
+                description : req.body.description     <br>       
+            }<br>
+        },<br>
+        {<br>
+            new : true<br>
+        }, <br>
+        function(err, updatedTodo){<br>
+            if(err){<br>
+                res.send(err);<br>
+            }else{<br>
+                res.json(updatedTodo)<br>
+            }<br>
+        }<br>
+    )<br>
+ });<br>
+
+//Deleting a todo
+ router.delete('/todo/:id', function(req, res, next){<br>
+
+    todos.findByIdAndRemove(req.params.id, function(err, deletedTodo) {<br>
+        if(err){<br>
+            res.send("Error " +err)<br>
+        }else{<br>
+            res.json(deletedTodo)<br>
+        }  <br>
+    })<br>
+    
+ })<br>
+
+
+module.exports = router;
+
+# API Complete
+
+That’s it! You have a working Node API with each of the four major CRUD operations.
+
+The goal of this tutorial was to give you a familiarity with Express, Node, and MongoDB — you can use your simple app as a launching pad for more complex projects.
