@@ -174,7 +174,7 @@ router.get('/todo/:id', function(req, res, next) {<br>
     )<br>
  });<br>
 
-//Deleting a todo
+ //Deleting a todo
  router.delete('/todo/:id', function(req, res, next){<br>
 
     todos.findByIdAndRemove(req.params.id, function(err, deletedTodo) {<br>
