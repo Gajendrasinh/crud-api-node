@@ -9,9 +9,17 @@
   },
   "author": "Gajendrasinh Zala",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gajendrasinh/crud-api-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gajendrasinh/crud-api-node/issues"
+  },
+  "homepage": "https://github.com/Gajendrasinh/crud-api-node#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mongoose": "^5.0.0-rc0"
+    "mongoose": "^5.0.0-rc1"
   }
 }

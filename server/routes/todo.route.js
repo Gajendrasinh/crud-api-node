@@ -44,6 +44,7 @@ router.get('/todos/:id', function(req, res, next) {
     var newTodo = new todos();
     newTodo.title = req.body.title;
     newTodo.description = req.body.description;
+	newTodo.completed = req.body.completed	
     newTodo.save(function(err, insertedTodo){
         if(err){
             console.log(err);
@@ -57,7 +58,8 @@ router.get('/todos/:id', function(req, res, next) {
     todos.findByIdAndUpdate(req.params.id , {
             $set : {
                 title : req.body.title,
-                description : req.body.description            
+                description : req.body.description,
+				completed : req.body.completed	
             }
         },
         {
