@@ -100,94 +100,94 @@ $ cd app/routes
 
 Now, create a new file called todo.route.js inside app/routes folder with the following contents -
 
-const express = require('express'); <br>
-const router = express.Router(); <br>
-const mongoose = require('mongoose'); <br>
-const todos = require('../models/todo.model'); <br>
-var configDB = require('../config/database.js');<br>
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const todos = require('../models/todo.model');
+var configDB = require('../config/database.js');
 
-mongoose.Promise = global.Promise;<br>
+mongoose.Promise = global.Promise;
 
-mongoose.connect(configDB.url, function (err) {  <br>
-    if(err){<br>
-		console.error('Error! '+err);<br>
-	}else{<br>
-        console.log("Database connected")<br>
-    }<br>
+mongoose.connect(configDB.url, function (err) {  
+    if(err){
+		console.error('Error! '+err);
+	}else{
+        console.log("Database connected")
+    }
 }); 
 
+// middleware that is specific to this router
+router.use(function timeLog (req, res, next) {
+    console.log('Time: ', Date.now())
+    next()
+})
 
-//Retrieving all todo list
-router.get('/todo', function(req, res, next) {<br>
-   todos.find({}).exec(function(err, todos){<br>
-        if(err){<br>
-            console.error("Error " +err);<br>
-        }else{<br>
-            res.json(todos);<br>
-        }<br>
-   });<br>
+router.get('/todos', function(req, res, next) {
+   todos.find({}).exec(function(err, todos){
+        if(err){
+            console.error("Error " +err);
+        }else{
+            res.json(todos);
+        }
+   });
 });
 
-//Retrieving a single todo list
-router.get('/todo/:id', function(req, res, next) {<br>
-    todos.findById(req.params.id).exec(function(err, todos){<br>
-         if(err){<br>
-             console.error("Error " +err);<br>
-         }else{<br>
-             res.json(todos);<br>
+router.get('/todos/:id', function(req, res, next) {
+    todos.findById(req.params.id).exec(function(err, todo){
+         if(err){
+             console.error("Error " +err);
+         }else{
+             res.json(todo);
          }
     });
  });
 
-//Creating a new todo list
- router.post('/todo', function(req, res, next){<br>
-    var newtodos = new Categories();<br>
-    newtodos.title = req.body.title;<br>
-    newtodos.description = req.body.description;<br>
-    newtodos.save(function(err, insertedTodo){<br>
-        if(err){<br>
-            console.log(err);<br>
-        }else{<br>
-            res.json(insertedTodo);<br>
-        }   <br>
-    })<br>
- });<br>
+ router.post('/todo', function(req, res, next){
+    var newTodo = new todos();
+    newTodo.title = req.body.title;
+    newTodo.description = req.body.description;
+	newTodo.completed = req.body.completed	
+    newTodo.save(function(err, insertedTodo){
+        if(err){
+            console.log(err);
+        }else{
+            res.json(insertedTodo);
+        }   
+    })
+ });
 
-//Updating a todo list
- router.put('/todo/:id', function(req, res, next){<br>
-    todos.findByIdAndUpdate(req.params.id , {<br>
-            $set : {<br>
-                title : req.body.title,<br>
-                description : req.body.description     <br>       
-            }<br>
-        },<br>
-        {<br>
-            new : true<br>
-        }, <br>
-        function(err, updatedTodo){<br>
-            if(err){<br>
-                res.send(err);<br>
-            }else{<br>
-                res.json(updatedTodo)<br>
-            }<br>
-        }<br>
-    )<br>
- });<br>
+ router.put('/todo/:id', function(req, res, next){
+    todos.findByIdAndUpdate(req.params.id , {
+            $set : {
+                title : req.body.title,
+                description : req.body.description,
+				completed : req.body.completed	
+            }
+        },
+        {
+            new : true
+        }, 
+        function(err, updatedTodo){
+            if(err){
+                res.send(err);
+            }else{
+                res.json(updatedTodo)
+            }
+        }
+    )
+ });
 
- //Deleting a todo <br>
- router.delete('/todo/:id', function(req, res, next){<br>
+ router.delete('/todo/:id', function(req, res, next){
 
-    todos.findByIdAndRemove(req.params.id, function(err, deletedTodo) {<br>
-        if(err){<br>
-            res.send("Error " +err)<br>
-        }else{<br>
-            res.json(deletedTodo)<br>
-        }  <br>
-    })<br>
+    todos.findByIdAndRemove(req.params.id, function(err, deletedTodo) {
+        if(err){
+            res.send("Error " +err)
+        }else{
+            res.json(deletedTodo)
+        }  
+    })
     
- })<br>
-
-
+ })
 module.exports = router;
 
 # API Complete
